@@ -21,8 +21,8 @@ function deleteCard(evt) {
 }
 
 // Лайк
-function cardLikeFun (evt) {
+function handleLikeButton  (evt) {
     evt.classList.toggle('card__like-button_is-active');
 }
 
-export { createCard, cardLikeFun, deleteCard };
+export { createCard, handleLikeButton , deleteCard };

@@ -1,7 +1,7 @@
 // Import
 import "/src/pages/index.css";
 import { initialCards } from '/src/components/cards.js';
-import { createCard, cardLikeFun, deleteCard } from '/src/components/card.js';
+import { createCard, handleLikeButton , deleteCard } from '/src/components/card.js';
 import { openModal, closeModal} from '/src/components/modal.js';
 
 // 1) Редактирование профиля
@@ -14,6 +14,8 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const popupFormEditProfile = document.querySelector('.popup__form[name="edit-profile"]');
 const profileEditButton = document.querySelector('.profile__edit-button');
+
+
 
 // Открытие модального окна редактирования профиля
 function openProfileModal() {
@@ -49,7 +51,8 @@ cardsLoad(picturesList);
 
 // Функция создания новой карточки
 function createNewCard(pictures, card) {
-    const newCardElement = createCard(card, cardLikeFun, deleteCard, viewCard);
+    const newCardElement = createCard(card, handleLikeButton , deleteCard, viewCard);
+     picturesList.append(newCardElement);
     if (newCardElement) {
         pictures.prepend(newCardElement);
     }
@@ -86,3 +89,13 @@ function viewCard(card) {
     popupCaption.textContent = card.name;
     openModal(popupTypeImage);
 }
+
+// Работа клика по крестику и пустому месту
+const popup = document.querySelectorAll('.popup');
+popup.forEach((event) => {
+  event.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup__close') || evt.target === evt.currentTarget) {
+        closeModal(evt.currentTarget);
+  }
+  })
+})

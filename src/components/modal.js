@@ -8,7 +8,7 @@ function handleEscButton(evt) {
 
 // Функция открытия модального окна
 function openModal(modalWindow) {
-    modalWindow.classList.add('popup_is-animated','popup_is-opened');
+    modalWindow.classList.add('popup_is-opened');
     document.addEventListener('keydown', handleEscButton);
 }
 

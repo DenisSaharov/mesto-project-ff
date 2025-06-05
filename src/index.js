@@ -47,23 +47,24 @@ const popupImage = popupTypeImage.querySelector('.popup__image');
 const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const picturesList = document.querySelector('.pictures__list');
 
-cardsLoad(picturesList);
-
-// Функция создания новой карточки
-function createNewCard(pictures, card) {
-    const newCardElement = createCard(card, handleLikeButton , deleteCard, viewCard);
-     picturesList.append(newCardElement);
-    if (newCardElement) {
-        pictures.prepend(newCardElement);
+// Функция создания новой карточки с выбором метода вставки
+function createNewCard(pictures, card, isNewCard = false) { 
+    const newCardElement = createCard(card, handleLikeButton , deleteCard, viewCard); 
+    if (newCardElement) { 
+        if (isNewCard) {
+            pictures.prepend(newCardElement);
+        } else {
+            pictures.append(newCardElement);
+        }
     }
 }
 
-// Функция добавления карточек при загрузке страницы
-function cardsLoad(pictures) {
-    initialCards.forEach(cardData => {
+// Загрузка существующих карточек
+function cardsLoad(pictures) { 
+    initialCards.forEach(cardData => { 
        createNewCard(pictures, cardData);
     });
-}
+} 
 
 // Отправка формы добавления новой карточки
 function saveCard (evt) {
@@ -72,7 +73,7 @@ function saveCard (evt) {
         name: popupinputTypeCardName.value,
         link: popupInputLinkTypeUrl.value
     };
-    createNewCard(picturesList, newCard);
+    createNewCard(picturesList, newCard, true);
     evt.target.reset();
     closeModal(popupTypeNewCard);
 }
@@ -99,3 +100,5 @@ popup.forEach((event) => {
   }
   })
 })
+
+cardsLoad(picturesList);

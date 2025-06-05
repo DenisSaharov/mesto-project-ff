@@ -2,7 +2,7 @@ const cardTemplate = document.querySelector('#card-template').content;
 
 // Создание карточки
 function createCard(card, cardLike, cardDel, openCardPopup) {
-    // if (!card) return;    
+    if (!card) return;    
     const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
     const imgCard = cardElement.querySelector('.card__image');
     const likeCard = cardElement.querySelector('.card__like-button');

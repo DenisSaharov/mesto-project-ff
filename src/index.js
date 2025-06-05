@@ -15,8 +15,6 @@ const profileDescription = document.querySelector('.profile__description');
 const popupFormEditProfile = document.querySelector('.popup__form[name="edit-profile"]');
 const profileEditButton = document.querySelector('.profile__edit-button');
 
-
-
 // Открытие модального окна редактирования профиля
 function openProfileModal() {
     popupInputTypeName.value = profileTitle.textContent;
@@ -47,7 +45,7 @@ const popupImage = popupTypeImage.querySelector('.popup__image');
 const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const picturesList = document.querySelector('.pictures__list');
 
-// Функция создания новой карточки с выбором метода вставки
+// Функция создания новой карточки
 function createNewCard(pictures, card, isNewCard = false) { 
     const newCardElement = createCard(card, handleLikeButton , deleteCard, viewCard); 
     if (newCardElement) { 

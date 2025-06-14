@@ -1,5 +1,9 @@
 export const initialCards = [
     {
+      name: "Коробок",
+      link:"https://media.govoritmoskva.ru/news/2021/09/04/Владислав-Поздняков.jpg"
+    },
+    {
       name: "Родный",
       link: "https://yt3.googleusercontent.com/34or3u8De7f8HEd1k6kCDEoEH20jndb1nLT5O2uTtZexMt4mY45rir6Zqqy0LXbubRZEyHFy=s900-c-k-c0x00ffffff-no-rj",
     },

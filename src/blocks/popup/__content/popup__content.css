@@ -17,3 +17,11 @@
     padding: 30px 20px;
   }
 }
+
+.popup_type_delete .popup__content {
+  min-height: 0;
+}
+
+.popup_type_avatar .popup__content {
+  min-height: 0;
+}

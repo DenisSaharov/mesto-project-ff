@@ -18,3 +18,19 @@ export function closeModal(modalWindow) {
     document.removeEventListener('keydown', handleEscButton);
 }
 
+export function openDeletePopup(cardId, cardElement) {
+  const popupDelete = document.querySelector(".popup_type_delete");
+  const buttonDelete = popupDelete.querySelector(".popup__button_type_delete");
+
+  openModal(popupDelete);
+
+  buttonDelete.onclick = null;
+
+  buttonDelete.onclick = () => {
+    deleteCard(cardId)
+      .then(() => {
+        cardElement.remove();
+        closeModal(popupDelete);
+      })
+  };
+}

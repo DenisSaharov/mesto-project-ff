@@ -1,10 +1,10 @@
 import "/src/pages/index.css";
-import { createCard, handleLikeButton , deleteCard } from '/src/components/card.js';
+import { createCard , deleteCard, cardLikeCheck, toggleLikeButton, updateLikeCount} from '/src/components/card.js';
 import {
   openModal,
   closeModal
 } from '/src/components/modal.js';
-import { enableValidation, clearValidation } from '/src/components/val.js';
+import { enableValidation, clearValidation } from '/src/components/validation.js';
 import {
   getUserInfo,
   getCards,
@@ -25,7 +25,14 @@ const popupinputTypeCardName = document.querySelector('.popup__input_type_card-n
 const picturesList = document.querySelector('.pictures__list');
 const popupFormNameNewCard = document.querySelector('.popup__form[name="new-card"]');
 const placeLinkInput = popupFormNameNewCard.elements["link"];
-
+const profileImageWrapper = document.querySelector(".profile__image-wrapper");
+const popupTypeAvatar = document.querySelector(".popup_type_avatar");
+const popupAvatarForm = popupTypeAvatar.querySelector(".popup__form_avatar");
+const avatarInput = popupAvatarForm.querySelector('input[name="avatar"]');
+const profileImage = document.querySelector(".profile__image");
+const popupTypeImage = document.querySelector('.popup_type_image');
+const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__caption');
 
 const validationConfig = {
   formSelector: ".popup__form",
@@ -64,18 +71,18 @@ function closeModalListen() {
   });
 }
 
-// Обработка лайка
-function handleLikeButtonClick(cardId, likeButton, likeCountElement) {
-  const isLiked = likeButton.classList.contains("card__like-button_is-active");
 
-  likeCardFromAPI(cardId, isLiked)
-    .then((data) => {
-      likeButton.classList.toggle("card__like-button_is-active");
-      likeCountElement.textContent = data.likes.length;
-    })
-    .catch((error) => {
-      console.error("Ошибка при обновлении лайка:", error);
-    });
+function handleLikeButtonClick(cardId, likeButton, likeCountElement) {
+    const isLiked = cardLikeCheck(likeButton); // Используем функцию для проверки статуса лайка
+
+    likeCardFromAPI(cardId, isLiked)
+        .then((data) => {
+            toggleLikeButton(likeButton); // Используем функцию для переключения состояния кнопки
+            updateLikeCount(likeCountElement, data.likes); // Обновляем счетчик лайков
+        })
+        .catch((error) => {
+            console.error("Ошибка при обновлении лайка:", error);
+        });
 }
 
 // Сохранение данных профиля
@@ -143,9 +150,6 @@ function attachEventListeners() {
 }
 
 function handleViewImage(cardData) {
-const popupTypeImage = document.querySelector('.popup_type_image');
-const popupImage = popupTypeImage.querySelector('.popup__image');
-const popupCaption = popupTypeImage.querySelector('.popup__caption');
   popupImage.src = cardData.link;
   popupImage.alt = cardData.name;
   popupCaption.textContent = cardData.name;
@@ -157,9 +161,7 @@ Promise.all([getUserInfo(), getCards()])
     const currentUserId = userData._id;
     profileTitle.textContent = userData.name;
     profileDescription.textContent = userData.about;
-    document.querySelector(
-      ".profile__image"
-    ).style.backgroundImage = `url(${userData.avatar})`;
+    profileImage.style.backgroundImage = `url(${userData.avatar})`;
 
     cardsData.forEach((cardData) => {
       const cardElement = createCard(
@@ -181,13 +183,6 @@ Promise.all([getUserInfo(), getCards()])
 
 attachEventListeners();
 enableValidation(validationConfig);
-
-const profileImageWrapper = document.querySelector(".profile__image-wrapper");
-const popupTypeAvatar = document.querySelector(".popup_type_avatar");
-const popupAvatarForm = popupTypeAvatar.querySelector(".popup__form_avatar");
-const avatarInput = popupAvatarForm.querySelector('input[name="avatar"]');
-const profileImage = document.querySelector(".profile__image");
-
 
 profileImageWrapper.addEventListener("click", () => {
   openModal(popupTypeAvatar);

@@ -1,4 +1,4 @@
-import { openModal, closeModal } from '/src/components/modal.js';
+import { openDeletePopup} from '/src/components/modal.js';
 import { deleteCardFromServer ,likeCardFromAPI } from '/src/components/api.js';
 
 const cardTemplate = document.querySelector("#card-template").content;
@@ -45,18 +45,6 @@ export function createCard(
   return cardElement;
 }
 
-function openDeletePopup(cardId, cardElement) {
-  const popupDelete = document.querySelector(".popup_type_delete");
-  const buttonDelete = popupDelete.querySelector(".popup__button_type_delete");
-
-  openModal(popupDelete);
-
-  buttonDelete.onclick = () => {
-    deleteCard(cardElement, cardId);
-    closeModal(popupDelete);
-  };
-}
-
 export function deleteCard(cardElement, cardId) {
   deleteCardFromServer(cardId)
     .then(() => {
@@ -67,8 +55,35 @@ export function deleteCard(cardElement, cardId) {
     });
 }
 
+// Функция для обновления данных лайка и возвращения обновленных данных
+export function updateLikeStatus(cardData, userId) {
+  const hasLiked = isCardLiked(cardData, userId);
+  if (hasLiked) {
+    cardData.likes = cardData.likes.filter(user => user._id !== userId);
+  } else {
+    cardData.likes.push({ _id: userId });
+  }
+  return cardData;
+}
+
+// Функция для проверки статуса лайка
+export function cardLikeCheck(likeButton) {
+    return likeButton.classList.contains("card__like-button_is-active");
+}
+
+// Функция для обновления состояния кнопки лайка
+export function toggleLikeButton(likeButton) {
+    likeButton.classList.toggle("card__like-button_is-active");
+}
+
+// Функция для обновления счетчика лайков
+export function updateLikeCount(likeCountElement, likes) {
+    likeCountElement.textContent = likes.length;
+}
+
 export function likeCard(cardId, likeButton, likeCountElement) {
   likeCardFromAPI(cardId, likeButton, likeCountElement);
 }
+
 
 

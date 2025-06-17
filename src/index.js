@@ -1,5 +1,5 @@
 import "/src/pages/index.css";
-import { createCard , deleteCard, cardLikeCheck, toggleLikeButton, updateLikeCount} from '/src/components/card.js';
+import { createCard, cardLikeCheck, toggleLikeButton, updateLikeCount} from '/src/components/card.js';
 import {
   openModal,
   closeModal
@@ -33,6 +33,9 @@ const profileImage = document.querySelector(".profile__image");
 const popupTypeImage = document.querySelector('.popup_type_image');
 const popupImage = popupTypeImage.querySelector('.popup__image');
 const popupCaption = popupTypeImage.querySelector('.popup__caption');
+const popupDelete = document.querySelector(".popup_type_delete");
+const buttonDelete = popupDelete.querySelector(".popup__button_type_delete");
+const popups = document.querySelectorAll('.popup');
 
 const validationConfig = {
   formSelector: ".popup__form",
@@ -71,6 +74,29 @@ function closeModalListen() {
   });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  popups.forEach(popup => {
+    popup.classList.add('popup_is-animated');
+  });
+});
+
+function openDeletePopup(cardId, cardElement) {
+
+  openModal(popupDelete);
+
+  buttonDelete.onclick = null;
+
+  buttonDelete.onclick = () => {
+    deleteCard(cardId)
+      .then(() => {
+        cardElement.remove();
+        closeModal(popupDelete);
+      })
+      .catch((err) => { 
+      console.error("Ошибка при удалении карточки:", err); 
+    }); 
+  };
+}
 
 function handleLikeButtonClick(cardId, likeButton, likeCountElement) {
     const isLiked = cardLikeCheck(likeButton); // Используем функцию для проверки статуса лайка
@@ -166,7 +192,7 @@ Promise.all([getUserInfo(), getCards()])
     cardsData.forEach((cardData) => {
       const cardElement = createCard(
         cardData,
-        deleteCard,
+        openDeletePopup,
         handleLikeButtonClick,
         handleViewImage,
         currentUserId

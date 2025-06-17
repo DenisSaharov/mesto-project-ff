@@ -1,6 +1,3 @@
-import { openDeletePopup} from '/src/components/modal.js';
-import { deleteCardFromServer ,likeCardFromAPI } from '/src/components/api.js';
-
 const cardTemplate = document.querySelector("#card-template").content;
 
 export function createCard(
@@ -30,7 +27,7 @@ export function createCard(
     deleteButton.style.display = "none";
   } else {
     deleteButton.addEventListener("click", () => {
-      openDeletePopup(cardData._id, cardElement);
+      deleteCallback(cardData._id, cardElement);
     });
   }
 
@@ -45,15 +42,7 @@ export function createCard(
   return cardElement;
 }
 
-export function deleteCard(cardElement, cardId) {
-  deleteCardFromServer(cardId)
-    .then(() => {
-      cardElement.remove();
-    })
-    .catch((err) => {
-      console.error("Ошибка при удалении карточки:", err);
-    });
-}
+
 
 // Функция для обновления данных лайка и возвращения обновленных данных
 export function updateLikeStatus(cardData, userId) {
@@ -79,10 +68,6 @@ export function toggleLikeButton(likeButton) {
 // Функция для обновления счетчика лайков
 export function updateLikeCount(likeCountElement, likes) {
     likeCountElement.textContent = likes.length;
-}
-
-export function likeCard(cardId, likeButton, likeCountElement) {
-  likeCardFromAPI(cardId, likeButton, likeCountElement);
 }
 
 
